@@ -34,7 +34,7 @@
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.email }}</td>
-          <td>{{ cliente.createAt }}</td>
+          <td>{{ cliente.createAt | date : "EEEE dd, MMMM yyyy" }}</td>
           <td>
             <button
               type="button"
@@ -58,5 +58,6 @@
         </tr>
       </tbody>
     </table>
+    <paginator-nav *ngIf="paginator" [paginator]="paginator"></paginator-nav>
   </div>
 </div>
