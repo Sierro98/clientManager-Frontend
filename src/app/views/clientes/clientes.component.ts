@@ -3,6 +3,7 @@ import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { ModalService } from './perfil/modal.service';
 
 @Component({
   selector: 'app-clientes',
@@ -11,10 +12,12 @@ import { ActivatedRoute } from '@angular/router';
 export class ClientesComponent implements OnInit {
   clientes: Cliente[];
   paginator: any;
+  selectedClient: Cliente;
 
   constructor(
     private clienteService: ClienteService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -26,6 +29,14 @@ export class ClientesComponent implements OnInit {
       this.clienteService.getClientes(page).subscribe((response) => {
         this.clientes = response.content as Cliente[];
         this.paginator = response;
+      });
+    });
+    this.modalService.uploadNotifier.subscribe((cliente) => {
+      this.clientes = this.clientes.map((clienteOriginal) => {
+        if (cliente.id == clienteOriginal.id) {
+          clienteOriginal.profilePicture = cliente.profilePicture;
+        }
+        return clienteOriginal;
       });
     });
   }
@@ -71,4 +82,10 @@ export class ClientesComponent implements OnInit {
         }
       });
   }
+
+  openModal(cliente: Cliente) {
+    this.selectedClient = cliente;
+    this.modalService.openModal();
+  }
+
 }

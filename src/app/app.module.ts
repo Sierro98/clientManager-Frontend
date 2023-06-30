@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PerfilComponent } from './views/clientes/perfil/perfil.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 registerLocaleData(localeES, 'es');
 
@@ -35,6 +37,7 @@ const routes: Routes = [
     DirectivasComponent,
     FormComponent,
     PaginatorComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
+    ModalModule.forRoot(),
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   bootstrap: [AppComponent],

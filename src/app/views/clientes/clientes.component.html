@@ -1,3 +1,4 @@
+<app-perfil *ngIf="selectedClient" [cliente]="selectedClient"></app-perfil>
 <div class="card border-info mb-3">
   <div class="card-header">Clientes</div>
   <div class="card-body">
@@ -19,7 +20,7 @@
     >
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Foto</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
@@ -30,7 +31,26 @@
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <td>{{ cliente.id }}</td>
+          <td>
+            <img
+              (click)="openModal(cliente)"
+              style="width: 70px; cursor: pointer"
+              class="img-thumbnail rounded mx-auto d-block clickable-image"
+              *ngIf="cliente?.profilePicture"
+              src="http://localhost:8080/api/clientes/img/{{
+                cliente?.profilePicture
+              }}"
+              alt="Imagen de usuario"
+            />
+            <img
+              (click)="openModal(cliente)"
+              style="width: 70px; cursor: pointer"
+              class="img-thumbnail rounded mx-auto d-block clickable-image"
+              *ngIf="!cliente?.profilePicture"
+              src="http://localhost:8080/images/not_user.png"
+              alt="Imagen de usuario"
+            />
+          </td>
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.email }}</td>
