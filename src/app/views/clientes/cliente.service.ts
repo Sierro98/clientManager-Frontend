@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from './cliente';
 import { Observable, map, catchError, throwError } from 'rxjs';
-import {
-  HttpClient,
-  HttpEvent,
-  HttpHeaders,
-  HttpRequest,
-} from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Region } from './region';
 @Injectable({
@@ -15,31 +9,11 @@ import { Region } from './region';
 })
 export class ClienteService {
   private urlEndPoint: string = 'http://localhost:8080/api/clientes';
-  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  /* getClientes(): Observable<Cliente[]> {
-    return this.http.get(this.urlEndPoint).pipe(
-      map((response) => {
-        let clientes = response as Cliente[];
-        return clientes.map((cliente) => {
-          //cliente.createAt = formatDate(cliente.createAt, 'fullDate', 'es');
-          return cliente;
-        });
-      })
-    );
-  } */
-
   getRegiones(): Observable<Region[]> {
-    return this.http.get(`${this.urlEndPoint}/regiones`).pipe(
-      map((response) => {
-        let regiones = response as Region[];
-        return regiones.map((region) => {
-          return region;
-        });
-      })
-    );
+    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`);
   }
 
   getClientes(page: number): Observable<any> {
@@ -57,57 +31,45 @@ export class ClienteService {
     return this.http.get(`${this.urlEndPoint}/${id}`).pipe(
       map((response: any) => response as Cliente),
       catchError((e) => {
-        this.router.navigate(['/clientes']);
-        Swal.fire(e.error.mensaje, e.error.error, 'error');
+        if (e.status != 401 && e.error.mensaje) {
+          this.router.navigate(['/clientes']);
+        }
         return throwError(() => e);
       })
     );
   }
 
   createCliente(cliente: Cliente): Observable<Cliente> {
-    return this.http
-      .post(this.urlEndPoint, cliente, { headers: this.httpHeaders })
-      .pipe(
-        catchError((e) => {
-          if (e.status == 400) {
-            return throwError(() => e);
-          }
-          Swal.fire(e.error.mensaje, e.error.error, 'error');
+    return this.http.post(this.urlEndPoint, cliente).pipe(
+      catchError((e) => {
+        if (e.status == 400) {
           return throwError(() => e);
-        }),
-        map((response: any) => response.cliente as Cliente)
-      );
+        }
+        return throwError(() => e);
+      }),
+      map((response: any) => response.cliente as Cliente)
+    );
   }
 
   update(cliente: Cliente): Observable<Cliente> {
-    return this.http
-      .put(`${this.urlEndPoint}/${cliente.id}`, cliente, {
-        headers: this.httpHeaders,
-      })
-      .pipe(
-        catchError((e) => {
-          if (e.status == 400) {
-            return throwError(() => e);
-          }
-          Swal.fire(e.error.mensaje, e.error.error, 'error');
+    return this.http.put(`${this.urlEndPoint}/${cliente.id}`, cliente).pipe(
+      catchError((e) => {
+        if (e.status == 400) {
           return throwError(() => e);
-        }),
-        map((response: any) => response.cliente as Cliente)
-      );
+        }
+        return throwError(() => e);
+      }),
+      map((response: any) => response.cliente as Cliente)
+    );
   }
 
   delete(id: number): Observable<Cliente> {
-    return this.http
-      .delete(`${this.urlEndPoint}/${id}`, {
-        headers: this.httpHeaders,
-      })
-      .pipe(
-        catchError((e) => {
-          Swal.fire(e.error.mensaje, e.error.error, 'error');
-          return throwError(() => e);
-        }),
-        map((response: any) => response.cliente as Cliente)
-      );
+    return this.http.delete(`${this.urlEndPoint}/${id}`).pipe(
+      catchError((e) => {
+        return throwError(() => e);
+      }),
+      map((response: any) => response.cliente as Cliente)
+    );
   }
 
   subirFoto(archivo: File, id): Observable<HttpEvent<{}>> {
@@ -117,7 +79,7 @@ export class ClienteService {
 
     const req = new HttpRequest(
       'POST',
-      `${this.urlEndPoint}/upload`,
+      `${this.urlEndPoint}/uploadImg`,
       formData,
       {
         reportProgress: true,

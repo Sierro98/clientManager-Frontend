@@ -8,7 +8,7 @@ import { FooterComponent } from './views/footer/footer.component';
 import { DirectivasComponent } from './views/directivas/directivas.component';
 import { PaginatorComponent } from './views/paginator/paginator.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './views/clientes/form.component';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
@@ -16,6 +16,11 @@ import localeES from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PerfilComponent } from './views/clientes/perfil/perfil.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { LoginComponent } from './views/usuarios/login.component';
+import { AuthGuard } from './views/usuarios/guards/auth.guard';
+import { RoleGuard } from './views/usuarios/guards/role.guard';
+import { TokenInterceptor } from './views/usuarios/interceptors/token.interceptor';
+import { AuthInterceptor } from './views/usuarios/interceptors/auth.interceptor';
 
 registerLocaleData(localeES, 'es');
 
@@ -24,8 +29,19 @@ const routes: Routes = [
   { path: 'directivas', component: DirectivasComponent },
   { path: 'clientes', component: ClientesComponent },
   { path: 'clientes/page/:page', component: ClientesComponent },
-  { path: 'clientes/form', component: FormComponent },
-  { path: 'clientes/form/:id', component: FormComponent },
+  {
+    path: 'clientes/form',
+    component: FormComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_ADMIN' },
+  },
+  {
+    path: 'clientes/form/:id',
+    component: FormComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_ADMIN' },
+  },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
@@ -38,6 +54,7 @@ const routes: Routes = [
     FormComponent,
     PaginatorComponent,
     PerfilComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +64,11 @@ const routes: Routes = [
     BrowserAnimationsModule,
     ModalModule.forRoot(),
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

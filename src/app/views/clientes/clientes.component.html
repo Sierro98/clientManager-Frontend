@@ -1,10 +1,11 @@
 <app-perfil *ngIf="selectedClient" [cliente]="selectedClient"></app-perfil>
 <div class="card border-info mb-3">
   <div class="card-header">Clientes</div>
-  <div class="card-body">
+  <div class="card-body table-responsive">
     <h5 class="card-title">Listado de clientes:</h5>
     <div class="my-2 text-right">
       <button
+        *ngIf="authService.hasRole('ROLE_ADMIN')"
         class="btn btn-rounded btn-primary"
         [routerLink]="['/clientes/form']"
       >
@@ -15,23 +16,23 @@
       ¡No hay registros en la base de datos!
     </div>
     <table
-      class="table table-bordered table-striped mt-4"
+      class="table table-bordered table-striped mt-4 ml-2 mr-2"
       *ngIf="clientes?.length > 0"
     >
       <thead>
         <tr>
-          <th>Foto</th>
+          <th *ngIf="authService.hasRole('ROLE_USER')">Foto</th>
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Email</th>
           <th>Fecha</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Editar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">Eliminar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let cliente of clientes">
-          <td>
+          <td *ngIf="authService.hasRole('ROLE_USER')">
             <img
               (click)="openModal(cliente)"
               style="width: 70px; cursor: pointer"
@@ -55,7 +56,7 @@
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.createAt | date : "EEEE dd, MMMM yyyy" }}</td>
-          <td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"
               name="button"
@@ -65,7 +66,7 @@
               editar
             </button>
           </td>
-          <td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">
             <button
               type="button"
               name="button"

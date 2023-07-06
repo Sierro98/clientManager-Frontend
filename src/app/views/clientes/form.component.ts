@@ -33,6 +33,8 @@ export class FormComponent implements OnInit {
   }
 
   cargarCliente(): void {
+    console.log(this.cliente);
+
     this.activatedRoute.params.subscribe((params) => {
       let id: number = +params['id'];
       if (id) {

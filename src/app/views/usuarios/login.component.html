@@ -1,0 +1,51 @@
+<div class="card border-primary text-center">
+  <div class="card header display-6">{{ titulo }}</div>
+  <div class="card-body">
+    <form method="post">
+      <div class="row justify-content-center">
+        <div class="form-group col-sm-6">
+          <input
+            [(ngModel)]="usuario.username"
+            type="text"
+            class="form-control mb-3"
+            name="username"
+            id="username"
+            placeholder="Username"
+            autofocus
+            required
+          />
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <input
+              [(ngModel)]="usuario.password"
+              type="{{ hidePassword ? 'password' : 'text' }}"
+              class="form-control"
+              name="password"
+              id="password"
+              placeholder="Password"
+              required
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="togglePassword()"
+              >
+                <i [class]="hidePassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-sm-6 d-grid mx-auto">
+          <input
+            (click)="login()"
+            type="submit"
+            class="btn btn-lg btn-primary btn-block"
+            value="Login"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

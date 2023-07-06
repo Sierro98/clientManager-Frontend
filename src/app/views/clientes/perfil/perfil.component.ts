@@ -4,6 +4,7 @@ import { ClienteService } from '../cliente.service';
 import Swal from 'sweetalert2';
 import { HttpEventType } from '@angular/common/http';
 import { ModalService } from './modal.service';
+import { AuthService } from '../../usuarios/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -18,7 +19,8 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private clienteService: ClienteService,
-    public modalService: ModalService
+    public modalService: ModalService,
+    public authService: AuthService
   ) {}
   ngOnInit() {}
 
