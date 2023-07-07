@@ -30,7 +30,10 @@
                   </li>
                   <li class="list-group-item">{{ cliente?.region.nombre }}</li>
                 </ul>
-                <div class="input-group mb-3" *ngIf="authService.hasRole('ROLE_ADMIN')">
+                <div
+                  class="input-group mb-3"
+                  *ngIf="authService.hasRole('ROLE_ADMIN')"
+                >
                   <input
                     (change)="seleccionarFoto($event)"
                     type="file"
@@ -77,6 +80,34 @@
                   alt="Imagen de usuario"
                 />
               </div>
+            </div>
+            <div *ngIf="cliente?.listaFactura.length == 0" class="row">
+              <div class="alert alert-info my-4">
+                {{ cliente?.nombre }} no tiene facturas asociadas.
+              </div>
+            </div>
+            <div
+              *ngIf="cliente?.listaFactura.length > 0"
+              class="row table-responsive"
+            >
+              <table class="table table-bordered table-striped my-4">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>descripcion</th>
+                    <th>fecha</th>
+                    <th>total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let factura of cliente.listaFactura">
+                    <td>{{ factura.id }}</td>
+                    <td>{{ factura.descripcion }}</td>
+                    <td>{{ factura.createAt }}</td>
+                    <td>{{ factura.importeTotal.toFixed(2) }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

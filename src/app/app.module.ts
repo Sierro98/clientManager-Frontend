@@ -21,6 +21,7 @@ import { AuthGuard } from './views/usuarios/guards/auth.guard';
 import { RoleGuard } from './views/usuarios/guards/role.guard';
 import { TokenInterceptor } from './views/usuarios/interceptors/token.interceptor';
 import { AuthInterceptor } from './views/usuarios/interceptors/auth.interceptor';
+import { DetalleComponent } from './views/facturas/detalle.component';
 
 registerLocaleData(localeES, 'es');
 
@@ -55,6 +56,7 @@ const routes: Routes = [
     PaginatorComponent,
     PerfilComponent,
     LoginComponent,
+    DetalleComponent,
   ],
   imports: [
     BrowserModule,
