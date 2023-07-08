@@ -9,6 +9,7 @@ import { Usuario } from './usuario';
 import Swal from 'sweetalert2';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { ModalService } from './registro/modal.service';
 
 @Component({
   selector: 'app-login',
@@ -32,10 +33,12 @@ export class LoginComponent implements OnInit {
     timerProgressBar: true,
   });
 
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private modalService: ModalService
   ) {
     this.usuario = new Usuario();
   }
@@ -86,5 +89,9 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+  }
+
+  openModal() {
+    this.modalService.openModal();
   }
 }
