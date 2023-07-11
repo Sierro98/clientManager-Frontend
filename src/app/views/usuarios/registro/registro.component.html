@@ -18,93 +18,178 @@
           ></button>
         </div>
         <div class="modal-body">
-          <div class="container">
-            <div class="form-group col-sm-6 d-grid mx-auto mt-3">
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingInput"
-                  placeholder="name@example.com"
-                />
-                <label for="floatingInput">Username</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingInput"
-                  placeholder="name@example.com"
-                />
-                <label for="floatingInput">Nombre</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingInput"
-                  placeholder="name@example.com"
-                />
-                <label for="floatingInput">Apellido</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="floatingInput"
-                  placeholder="name@example.com"
-                />
-                <label for="floatingInput">Email</label>
-              </div>
-              <div class="input-group">
+          <form #clienteForm="ngForm">
+            <div class="container">
+              <div class="form-group col-sm-6 d-grid mx-auto mt-3">
                 <div class="form-floating mb-3">
                   <input
-                    type="{{ hidePassword ? 'password' : 'text' }}"
+                    name="username"
+                    #username="ngModel"
+                    required
+                    minlength="3"
+                    [(ngModel)]="usuario.username"
+                    type="text"
                     class="form-control"
                     id="floatingInput"
                     placeholder="name@example.com"
                   />
-                  <label for="floatingInput">Contraseña</label>
+                  <label for="floatingInput">Username</label>
                 </div>
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    (click)="togglePassword()"
-                  >
-                    <i
-                      [class]="hidePassword ? 'bi bi-eye' : 'bi bi-eye-slash'"
-                    ></i>
-                  </button>
+                <div
+                  *ngIf="
+                    username.invalid && (username.dirty || username.touched)
+                  "
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Username requerido
                 </div>
-              </div>
-              <div class="input-group">
                 <div class="form-floating mb-3">
                   <input
-                    type="{{ hidePassword2 ? 'password' : 'text' }}"
+                    name="nombre"
+                    #nombre="ngModel"
+                    required
+                    [(ngModel)]="usuario.nombre"
+                    type="text"
                     class="form-control"
                     id="floatingInput"
                     placeholder="name@example.com"
                   />
-                  <label for="floatingInput">Repita Contraseña</label>
+                  <label for="floatingInput">Nombre</label>
                 </div>
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    (click)="togglePassword2()"
-                  >
-                    <i
-                      [class]="hidePassword2 ? 'bi bi-eye' : 'bi bi-eye-slash'"
-                    ></i>
-                  </button>
+                <div
+                  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Nombre requerido
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    name="apellido"
+                    #apellido="ngModel"
+                    required
+                    [(ngModel)]="usuario.apellido"
+                    type="text"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                  />
+                  <label for="floatingInput">Apellido</label>
+                </div>
+                <div
+                  *ngIf="
+                    apellido.invalid && (apellido.dirty || apellido.touched)
+                  "
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Apellido requerido
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    name="email"
+                    #email="ngModel"
+                    required
+                    [(ngModel)]="usuario.email"
+                    type="email"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                  />
+                  <label for="floatingInput">Email</label>
+                </div>
+                <div
+                  *ngIf="email.invalid && (email.dirty || email.touched)"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Email requerido
+                </div>
+                <div class="input-group">
+                  <div class="form-floating mb-3">
+                    <input
+                      (change)="checkPasswords()"
+                      name="password"
+                      #password="ngModel"
+                      required
+                      [(ngModel)]="usuario.password"
+                      type="{{ hidePassword ? 'password' : 'text' }}"
+                      class="form-control"
+                      id="floatingInput"
+                      placeholder="name@example.com"
+                    />
+                    <label for="floatingInput">Contraseña</label>
+                  </div>
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="togglePassword()"
+                    >
+                      <i
+                        [class]="hidePassword ? 'bi bi-eye' : 'bi bi-eye-slash'"
+                      ></i>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  *ngIf="
+                    password.invalid && (password.dirty || password.touched)
+                  "
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Contraseña requerida
+                </div>
+                <div class="input-group">
+                  <div class="form-floating mb-3">
+                    <input
+                      (change)="checkPasswords()"
+                      name="matchingPassword"
+                      #matchingPassword="ngModel"
+                      required
+                      [(ngModel)]="usuario.matchingPassword"
+                      type="{{ hidePassword2 ? 'password' : 'text' }}"
+                      class="form-control"
+                      id="floatingInput"
+                      placeholder="name@example.com"
+                    />
+                    <label for="floatingInput">Repita Contraseña</label>
+                  </div>
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="togglePassword2()"
+                    >
+                      <i
+                        [class]="
+                          hidePassword2 ? 'bi bi-eye' : 'bi bi-eye-slash'
+                        "
+                      ></i>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  *ngIf="!passwordMatch && matchingPassword.dirty"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  Las contraseñas no coinciden
                 </div>
               </div>
+              <div class="form-group col-sm-6 d-grid mx-auto mt-3">
+                <button
+                  role="button"
+                  class="btn btn-success btn-lg btn-block"
+                  (click)="registrar()"
+                >
+                  Sign up
+                </button>
+              </div>
             </div>
-            <div class="form-group col-sm-6 d-grid mx-auto mt-3">
-              <button class="btn btn-success btn-lg btn-block">Sign up</button>
-            </div>
-          </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button

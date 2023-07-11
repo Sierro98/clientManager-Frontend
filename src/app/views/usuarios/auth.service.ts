@@ -2,12 +2,14 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuario } from './usuario';
+import { RegisterUser } from './registro/register-user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   urlEndPoint: string = 'http://localhost:8080/oauth/token';
+  urlRegister: string = 'http://localhost:8080/api/clientes/register';
   credentials: string = btoa('angularapp' + ':' + '12345');
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,6 +28,10 @@ export class AuthService {
     return this.http.post<any>(this.urlEndPoint, params.toString(), {
       headers: this.headers,
     });
+  }
+
+  register(usuario: RegisterUser): Observable<any> {
+    return this.http.post<any>(this.urlRegister, usuario);
   }
 
   saveUser(accessToken: string): void {

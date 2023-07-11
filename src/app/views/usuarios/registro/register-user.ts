@@ -5,5 +5,5 @@ export class RegisterUser {
   nombre: string;
   apellido: string;
   email: string;
-  roles: string;
+  role: string;
 }
