@@ -81,7 +81,7 @@
                 />
               </div>
             </div>
-            <div class="row">
+            <div *ngIf="authService.hasRole('ROLE_ADMIN')" class="row">
               <button
                 type="button"
                 name="button"
@@ -126,7 +126,7 @@
                           Ver
                         </button>
                       </div>
-                      <div class="d-inline-block m-1">
+                      <div *ngIf="authService.hasRole('ROLE_ADMIN')" class="d-inline-block m-1">
                         <button
                           class="btn btn-danger btn-sm"
                           type="button"

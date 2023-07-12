@@ -49,8 +49,18 @@ const routes: Routes = [
     data: { role: 'ROLE_ADMIN' },
   },
   { path: 'login', component: LoginComponent },
-  { path: 'facturas/:id', component: DetalleComponent },
-  { path: 'facturas/form/:clienteId', component: FacturasComponent },
+  {
+    path: 'facturas/:id',
+    component: DetalleComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_USER' },
+  },
+  {
+    path: 'facturas/form/:clienteId',
+    component: FacturasComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'ROLE_ADMIN' },
+  },
 ];
 
 @NgModule({
@@ -78,7 +88,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es' },
