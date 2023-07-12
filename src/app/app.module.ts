@@ -10,7 +10,7 @@ import { PaginatorComponent } from './views/paginator/paginator.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './views/clientes/form.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +23,11 @@ import { TokenInterceptor } from './views/usuarios/interceptors/token.intercepto
 import { AuthInterceptor } from './views/usuarios/interceptors/auth.interceptor';
 import { DetalleComponent } from './views/facturas/detalle.component';
 import { RegistroComponent } from './views/usuarios/registro/registro.component';
+import { FacturasComponent } from './views/facturas/facturas.component';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 registerLocaleData(localeES, 'es');
 
@@ -44,6 +49,8 @@ const routes: Routes = [
     data: { role: 'ROLE_ADMIN' },
   },
   { path: 'login', component: LoginComponent },
+  { path: 'facturas/:id', component: DetalleComponent },
+  { path: 'facturas/form/:clienteId', component: FacturasComponent },
 ];
 
 @NgModule({
@@ -59,6 +66,7 @@ const routes: Routes = [
     LoginComponent,
     DetalleComponent,
     RegistroComponent,
+    FacturasComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +75,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es' },

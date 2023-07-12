@@ -1,1 +1,58 @@
-<p>detalle works!</p>
+<div class="card bg-light">
+  <div class="card-header">
+    <div class="card-header">{{ titulo }}: {{ factura?.descripcion }}</div>
+    <div class="class-body" *ngIf="factura">
+      <h4 class="card-title justify-content-end d-flex mt-3">
+        <a class="btn btn-outline-primary btn-xs" [routerLink]="['/clientes']"
+          >&laquo; volver</a
+        >
+      </h4>
+      <ul class="list-group my-2">
+        <li class="list-group-item list-group-item-primary">
+          Datos del cliente
+        </li>
+        <li class="list-group-item">{{ factura?.cliente.nombre }}</li>
+        <li class="list-group-item">{{ factura?.cliente.apellido }}</li>
+      </ul>
+      <ul class="list-group my-2">
+        <li class="list-group-item list-group-item-primary">
+          Datos de la factura
+        </li>
+        <li class="list-group-item">ID: {{ factura?.id }}</li>
+        <li class="list-group-item">Descripcion: {{ factura?.descripcion }}</li>
+        <li class="list-group-item">Fecha: {{ factura?.createAt }}</li>
+      </ul>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-bordered my-3">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of factura?.items">
+            <td>{{ item?.producto.nombre }}</td>
+            <td>{{ item?.producto.precio }}</td>
+            <td>{{ item?.cantidad }}</td>
+            <td>{{ item?.importe.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 class="float-end mx-3">
+      <span>Total factura: </span>
+      <span class="badge text-bg-primary">{{ factura?.importeTotal.toFixed(2) }}</span>
+    </h3>
+    <div class="card mb-4">
+      <div class="card card-header">Observaciones</div>
+      <div class="card card-body">
+        <p *ngIf="factura?.observacion">{{ factura?.observacion }}</p>
+        <p *ngIf="!factura?.observacion">No tiene observaciones</p>
+      </div>
+    </div>
+  </div>
+</div>
